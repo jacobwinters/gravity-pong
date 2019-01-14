@@ -1,0 +1,13 @@
+{
+	"background_color": "black",
+	"name": "Gravity Pong",
+	"icons": [
+		{
+			"src": "icon.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"start-url": ".",
+	"display": "fullscreen"
+}
