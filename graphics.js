@@ -1,5 +1,5 @@
-import {random, randomChance} from "./random.jsm";
-import images from "./images.jsm";
+import {random, randomChance} from "./random.js";
+import images from "./images.js";
 export {images};
 
 const image = new Image();

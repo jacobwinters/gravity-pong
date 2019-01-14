@@ -1,5 +1,5 @@
-import keys from "./input-keyboard.jsm";
-import touches from "./input-touchscreen.jsm";
+import keys from "./input-keyboard.js";
+import touches from "./input-touchscreen.js";
 
 const player1Inputs = [keys.player1, touches.player1];
 const player2Inputs = [keys.player2, touches.player2];

@@ -1,4 +1,4 @@
-import {random} from "./random.jsm";
+import {random} from "./random.js";
 
 function spawnBall({range, velocity, velocityRange}) {
 	return {

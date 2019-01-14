@@ -1,9 +1,9 @@
-import * as dat from "./dat.gui.module.jsm";
-import {Graphics} from "./graphics.jsm";
-import * as input from "./input.jsm";
-import physics from "./physics.jsm";
-import {random, lowRandom} from "./random.jsm";
-import createGame from "./setup.jsm";
+import * as dat from "./dat.gui.module.js";
+import {Graphics} from "./graphics.js";
+import * as input from "./input.js";
+import physics from "./physics.js";
+import {random, lowRandom} from "./random.js";
+import createGame from "./setup.js";
 
 const exponent = random() * 4;
 const strength = 10 ** (random() + exponent * (exponent > 0 ? 1 : 2)); // Formula derived empirically

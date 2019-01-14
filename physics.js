@@ -1,4 +1,4 @@
-import * as v from "./vector.jsm";
+import * as v from "./vector.js";
 
 const abs = Math.abs,
 	sign = Math.sign;
