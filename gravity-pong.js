@@ -5,38 +5,40 @@ import physics from "./physics.js";
 import {random, lowRandom} from "./random.js";
 import createGame from "./setup.js";
 
-const exponent = random() * 4;
-const strength = 10 ** (random() + exponent * (exponent > 0 ? 1 : 2)); // Formula derived empirically
-const settings = {
-	field: {
-		width: 250,
-		height: 400,
-		wallForceStrength: 500,
-	},
-	ball: {
-		spawn: {
-			count: 1 + 2 * (4 + ~~(random() * 4.5)),
-			range: 20 + lowRandom() * 20,
-			velocity: [random(), random() + Math.sign(random()) * 3],
-			velocityRange: [3, 3],
+function createSettings() {
+	const exponent = random() * 4;
+	const strength = 10 ** (random() + exponent * (exponent > 0 ? 1 : 2)); // Formula derived empirically
+	return {
+		field: {
+			width: 250,
+			height: 400,
+			wallForceStrength: 500,
 		},
-		interaction: {
-			exponent: exponent,
-			normalLength: 5 + Math.abs(lowRandom()) * 45,
-			strength: strength,
+		ball: {
+			spawn: {
+				count: 1 + 2 * (4 + ~~(random() * 4.5)),
+				range: 20 + lowRandom() * 20,
+				velocity: [random(), random() + Math.sign(random()) * 3],
+				velocityRange: [3, 3],
+			},
+			interaction: {
+				exponent: exponent,
+				normalLength: 5 + Math.abs(lowRandom()) * 45,
+				strength: strength,
+			},
+			radius: 5,
+			drag: 0.9999,
 		},
-		radius: 5,
-		drag: 0.9999,
-	},
-	paddle: {
-		width: 75,
-		height: 10,
-		distanceFromEdge: 200,
-		drag: 0,
-		acceleration: 5,
-		strength: 500,
-	},
-};
+		paddle: {
+			width: 75,
+			height: 10,
+			distanceFromEdge: 200,
+			drag: 0,
+			acceleration: 5,
+			strength: 500,
+		},
+	};
+}
 
 function runInput({paddles}) {
 	paddles[0].input = input.getPlayer1Input();
@@ -60,36 +62,47 @@ function frame({scores, balls, paddles, objects}, settings) {
 }
 
 const gfx = new Graphics(document.getElementById("canvas"));
-let game = createGame(settings);
+// Exposed globally for debugging
+window.settings = createSettings();
+window.game = createGame(window.settings);
 
-// For debugging
-window.game = game;
-window.settings = settings;
+let settingsOpen = false;
 
 let frames = 0;
 let baseTime = performance.now();
 function animationFrame(time) {
-	runInput(game);
-	gfx.frame(frame(game, settings), true, settings);
+	runInput(window.game);
+	gfx.frame(frame(window.game, window.settings), true, window.settings);
 	while (frames <= (time - baseTime) / (1000 / 60)) {
-		physics(game, settings);
+		physics(window.game, window.settings);
+		if (window.game.balls.length === 0) {
+			window.game.restartTimer--;
+		}
 		frames++;
 	}
-	gfx.frame(frame(game, settings), false, settings);
+	if (window.game.restartTimer <= 0) {
+		if (!settingsOpen) {
+			window.settings = createSettings();
+		}
+		window.game = createGame(window.settings);
+	}
+	gfx.frame(frame(window.game, window.settings), false, window.settings);
 	requestAnimationFrame(animationFrame);
 }
 requestAnimationFrame(animationFrame);
 
 function showSettings() {
+	settingsOpen = true;
+
 	const rootGui = new dat.GUI();
 
 	const actions = {
 		reset() {
-			window.game = game = createGame(settings);
+			window.game = createGame(window.settings);
 		},
 	};
 
-	makeSettings(settings, rootGui);
+	makeSettings(window.settings, rootGui);
 	makeSettings(actions, rootGui);
 	function makeSettings(obj, gui) {
 		for (const property of Object.keys(obj)) {

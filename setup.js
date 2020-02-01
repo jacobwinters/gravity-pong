@@ -20,6 +20,7 @@ export default function createGame(settings) {
 		balls: [],
 		paddles: [],
 		objects: [],
+		restartTimer: 60,
 	};
 	for (let i = 0; i < settings.ball.spawn.count; i++) {
 		game.balls.push(spawnBall(settings.ball.spawn));
