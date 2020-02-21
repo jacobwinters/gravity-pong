@@ -60,47 +60,7 @@ function paddleBallForces(paddle, ball, {strength}) {
 	ball.vel = v.add(ball.vel, gravityForceBetween(ball.pos, paddle.pos, 2, 0, -strength));
 }
 
-const objectBallForcesForType = {
-	bumper(bumper, ball, {ball: ballSettings}) {
-		if (v.distance(bumper.pos, ball.pos) < bumper.radius + ballSettings.radius) {
-			ball.vel = v.add(ball.vel, v.setLength(v.sub(ball.pos, bumper.pos), bumper.strength));
-			bumper.active = 5;
-		}
-	},
-	gravityBody({pos, exponent, normalLength, strength}, ball, settings) {
-		const force = gravityForceBetween(ball.pos, pos, exponent, normalLength, strength);
-		ball.vel = v.add(ball.vel, force);
-	},
-	block(block, ball, {ball: ballSettings}) {
-		if (v.distance(ball.pos, block.pos) < block.radius + ballSettings.radius) {
-			block.broken = true;
-			const blockSurfaceNormalAngle = v.theta(v.sub(ball.pos, block.pos));
-			const angleOfIncidence = Math.PI + v.theta(ball.vel) - blockSurfaceNormalAngle;
-			const reflectedAngle = blockSurfaceNormalAngle - angleOfIncidence;
-			ball.vel = v.setTheta(ball.vel, reflectedAngle);
-		}
-	},
-};
-
-function objectBallForces(object, ball, settings) {
-	objectBallForcesForType[object.type](object, ball, settings);
-}
-
-const processObjectForType = {
-	bumper(bumper, settings) {
-		bumper.active = Math.max(0, bumper.active - 1);
-	},
-	gravityBody(gravityBody, settings) {},
-	block(block, settings) {
-		return block.broken;
-	},
-};
-
-function processObject(object, settings) {
-	return processObjectForType[object.type](object, settings);
-}
-
-export default function physics({scores, balls, paddles, objects}, settings) {
+export default function physics({scores, balls, paddles}, settings) {
 	// Backwards loop because we're removing elements
 	for (let i = balls.length - 1; i >= 0; i--) {
 		for (let j = i - 1; j >= 0; j--) {
@@ -117,13 +77,5 @@ export default function physics({scores, balls, paddles, objects}, settings) {
 			paddleBallForces(paddle, ball, settings.paddle);
 		}
 		processPaddle(paddle, settings.paddle, settings.field);
-	}
-	for (let i = objects.length - 1; i >= 0; i--) {
-		for (const ball of balls) {
-			objectBallForces(objects[i], ball, settings);
-		}
-		if (processObject(objects[i], settings)) {
-			objects.splice(i, 1);
-		}
 	}
 }

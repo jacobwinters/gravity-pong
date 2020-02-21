@@ -45,16 +45,13 @@ function runInput({paddles}) {
 	paddles[1].input = input.getPlayer2Input();
 }
 
-function frame({scores, balls, paddles, objects}, settings) {
+function frame({scores, balls, paddles}, settings) {
 	return (graphics) => {
 		for (const ball of balls) {
 			graphics.drawBall(ball.pos[0], ball.pos[1], settings.ball.radius);
 		}
 		for (const paddle of paddles) {
 			graphics.drawPaddle(paddle.pos[0], paddle.pos[1], settings.paddle.width, settings.paddle.height);
-		}
-		for (const object of objects) {
-			graphics.drawObject(object);
 		}
 		graphics.drawScore(scores[0], -100);
 		graphics.drawScore(scores[1], 100);

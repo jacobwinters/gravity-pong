@@ -19,45 +19,10 @@ export default function createGame(settings) {
 		scores: [0, 0],
 		balls: [],
 		paddles: [],
-		objects: [],
 		restartTimer: 60,
 	};
 	for (let i = 0; i < settings.ball.spawn.count; i++) {
 		game.balls.push(spawnBall(settings.ball.spawn));
-	}
-	if (false) {
-		for (let i = 1; i < 10; i++) {
-			if (i !== 5) {
-				game.objects.push({
-					type: "bumper",
-					pos: [(i - 5) * 50, random() * 10],
-					radius: 10,
-					strength: 5,
-					active: 0,
-				});
-			}
-		}
-	}
-	if (false) {
-		for (let i = 1; i < 10; i++) {
-			if (i !== 5) {
-				game.objects.push({
-					type: "block",
-					pos: [(i - 5) * 50, random() * 10],
-					radius: 10,
-				});
-			}
-		}
-	}
-	if (false) {
-		game.objects.push({
-			type: "gravityBody",
-			pos: [random() * 250, random() * 200],
-			strength: -100,
-			exponent: 2,
-			normalLength: 0,
-			radius: 10,
-		});
 	}
 	game.paddles.push(spawnPaddle(-1, settings.paddle, settings.field));
 	game.paddles.push(spawnPaddle(1, settings.paddle, settings.field));

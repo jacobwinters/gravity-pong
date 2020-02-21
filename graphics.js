@@ -62,16 +62,6 @@ export class Graphics {
 		this.ctx.fillRect(this.transformX(x - width / 2), this.transformY(y + height / 2), this.transformLength(width), this.transformLength(height));
 	}
 
-	drawObject({pos: [x, y], radius, active}) {
-		this.ctx.beginPath();
-		this.ctx.arc(this.transformX(x), this.transformY(y), this.transformLength(radius), 0, 2 * Math.PI);
-		if (!this.doingBg && active) {
-			this.ctx.stroke();
-		} else {
-			this.ctx.fill();
-		}
-	}
-
 	drawImage({x: srcX, y: srcY, width: srcWidth, height: srcHeight}, x, y, scale) {
 		if (image.complete) {
 			if (this.doingBg) this.ctx.shadowOffsetY = 1000000;
