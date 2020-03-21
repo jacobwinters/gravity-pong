@@ -6,8 +6,6 @@ import {random, lowRandom} from "./random.js";
 import createGame from "./setup.js";
 
 function createSettings() {
-	const exponent = random() * 4;
-	const strength = 10 ** (random() + exponent * (exponent > 0 ? 1 : 2)); // Formula derived empirically
 	return {
 		field: {
 			width: 250,
@@ -22,9 +20,9 @@ function createSettings() {
 				velocityRange: [3, 3],
 			},
 			interaction: {
-				exponent: exponent,
-				normalLength: 5 + Math.abs(lowRandom()) * 45,
-				strength: strength,
+				exponent: 2,
+				normalLength: 0,
+				strength: 64,
 			},
 			radius: 5,
 			drag: 0.9999,
